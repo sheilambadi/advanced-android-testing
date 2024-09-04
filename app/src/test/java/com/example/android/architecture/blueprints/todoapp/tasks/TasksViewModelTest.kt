@@ -8,6 +8,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.not
 import org.hamcrest.Matchers.nullValue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,14 +17,19 @@ import org.robolectric.annotation.Config
 @Config(sdk = [30])
 @RunWith(AndroidJUnit4::class)
 class TasksViewModelTest(){
+    // Subject under test
+    private lateinit var tasksViewModel: TasksViewModel
+
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
+    @Before
+    fun setupViewModel() {
+        tasksViewModel = TasksViewModel(ApplicationProvider.getApplicationContext())
+    }
+
     @Test
     fun addNewTask_setsNewTaskEvent() {
-        // Given a fresh TasksViewModel
-        val tasksViewModel = TasksViewModel(ApplicationProvider.getApplicationContext())
-
         // When adding a new task
         tasksViewModel.addNewTask()
 
@@ -34,9 +40,6 @@ class TasksViewModelTest(){
 
     @Test
     fun setFilterAllTasks_tasksAddViewVisible() {
-        // Given a fresh ViewModel
-        val tasksViewModel = TasksViewModel(ApplicationProvider.getApplicationContext())
-
         // When the filter type is ALL_TASKS
         tasksViewModel.setFiltering(TasksFilterType.ALL_TASKS)
 
